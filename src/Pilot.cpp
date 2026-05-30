@@ -78,8 +78,8 @@ int main()
     GLFWwindow *window = glfwCreateWindow(mode->width, mode->height, "SFsim", monitor, nullptr);
     glfwMakeContextCurrent(window);
 
-    glfwSetKeyCallback(window, Input::keyCallback);
-    glfwSetMouseButtonCallback(window, Input::mouseButtonCallback);
+    glfwSetKeyCallback(window, Input::key_callback);
+    glfwSetMouseButtonCallback(window, Input::mouse_button_callback);
 
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
@@ -149,7 +149,7 @@ int main()
     GLTtext *text1 = gltCreateText();
     double prevTime = glfwGetTime();
 
-    AirbusA320neo* plane = new AirbusA320neo(0, 0, -5, 0, 0, 0);
+    AirbusA320neo* plane = new AirbusA320neo(0, 2, -5, 0, 0, 0);
     Runway* runway = new Runway(0, 0, -900, 0, 0, 0);
 
     while (!glfwWindowShouldClose(window))
@@ -165,7 +165,7 @@ int main()
             1, 0, 0, 0,
             0, 1, 0, 0,
             0, 0, 1, 0,
-            0, -10, -50, 1
+            -(plane->get_transform().x+0.25f), -(plane->get_transform().y+0.75f), plane->get_transform().z+32.5f, 1
         };
 
         float fov = 45.0f * 3.14159f / 180.0f;
@@ -190,7 +190,7 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-        if (Input::getKeyDown(GLFW_KEY_ESCAPE))
+        if (Input::get_key_down(GLFW_KEY_ESCAPE))
         {
             crash();
         }
